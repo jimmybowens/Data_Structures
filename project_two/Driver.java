@@ -19,6 +19,7 @@ public class Driver {
      
      try{
        getInput = new Scanner( new File(System.getProperty("user.home")+File.separator+"Desktop"+File.separator+"accounts data.txt")); // read file from desktop
+       getInput.nextLine();
        while(getInput.hasNext()){
         if(getInput.hasNext()){
           String token = getInput.next();
