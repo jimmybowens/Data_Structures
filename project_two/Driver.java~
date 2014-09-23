@@ -19,35 +19,30 @@ public class Driver {
      
      try{
        getInput = new Scanner( new File(System.getProperty("user.home")+File.separator+"Desktop"+File.separator+"accounts data.txt")); // read file from desktop
-       while(getInput.hasNext()){
-        if(getInput.hasNext()){
-          String token = getInput.next();
-          if(token.matches(ssn)){
-            System.out.println("SSN "+token);
-          }else if(token.matches(phoneNumber)){
-            System.out.println("Phone Number: "+token );
-          }else if(token.matches(accountNumber)){
-            System.out.println("Account Number: "+token);
-          }else if(token.matches(accountType)){
-            System.out.println("Account type: "+token);
-          }else if(token.matches(name)){
-            System.out.println("Name: "+token);
-          }
-            
-        }else{
-         getInput.next();
-        }
+       getInput.nextLine();
+       while(getInput.hasNextLine()){
+         if(getInput.hasNext()){
+           if(getInput.hasNextInt()){
+           System.out.println(getInput.nextInt());
+         }
+         else if(getInput.hasNext()){
+           System.out.println(getInput.next());
+         }
+         else{
+           getInput.next();
+         }
+         
+         }
+         
        }
+       getInput.close();
      
      }catch(IOException i){
        System.out.println(i); 
      }
      finally{
-       if(getInput != null){
-         getInput.close();
-       }
-     }
-       
+       getInput.close();
+     }   
    }
  
  public static void main(String[] args) throws IOException{

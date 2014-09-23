@@ -3,6 +3,7 @@ package project_two;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Driver {
  
@@ -10,45 +11,53 @@ public class Driver {
  
  public void readFile() throws IOException{
      Scanner getInput = null;
-     String name, accountNumber, phoneNumber, ssn, accountType;//to perform regula expressions
-     accountNumber ="^(\\d{8})$";
-     ssn = "^(\\d{3}-?\\d{2}-?\\d{4})$";
+     String accountNumber, phoneNumber, accountType;//to perform regula expressions
+     //accountNumber ="^(\\d{8})$";
+     Pattern social = Pattern.compile("^(\\d{3}-?\\d{2}-?\\d{4})$");
+     Pattern ssn = Pattern.compile("\\d{3}[-]?\\d{2}[-]?(\\d{4})");
+     Pattern phone = Pattern.compile("\\d{3}[-]?\\d{4}");
      phoneNumber = "^(\\d{3}-?\\d{4})$";
      accountType ="[a-zA-Z]";
-     name = "^[a-zA-Z]+";
+     Pattern name = Pattern.compile("^[a-zA-Z]+");
+     String stringToken = null;
+     int intToken;
+     
+     
      
      try{
        getInput = new Scanner( new File(System.getProperty("user.home")+File.separator+"Desktop"+File.separator+"accounts data.txt")); // read file from desktop
        getInput.nextLine();
-       while(getInput.hasNext()){
-        if(getInput.hasNext()){
-          String token = getInput.next();
-          if(token.matches(ssn)){
-            System.out.println("SSN "+token);
-          }else if(token.matches(phoneNumber)){
-            System.out.println("Phone Number: "+token );
-          }else if(token.matches(accountNumber)){
-            System.out.println("Account Number: "+token);
-          }else if(token.matches(accountType)){
-            System.out.println("Account type: "+token);
-          }else if(token.matches(name)){
-            System.out.println("Name: "+token);
-          }
-            
-        }else{
-         getInput.next();
-        }
-       }
-     
      }catch(IOException i){
-       System.out.println(i); 
+       System.out.println(i);
      }
-     finally{
-       if(getInput != null){
-         getInput.close();
+     
+     while(getInput.hasNextLine()){
+       while(getInput.hasNext()){
+         if(getInput.hasNextInt()){
+           //intToken = getInput.nextInt();
+           if(getInput.next().length()== 8){
+             System.out.println(getInput.next() + " Account Number");
+           }
+           if(!(getInput.next().length()==8)){
+             System.out.println(getInput.next() +" Balance");
+           }
+         }
+         else if(getInput.hasNext(name)){
+           System.out.println(getInput.next());
+         }
+         else if(getInput.hasNext(ssn)){
+           System.out.println(getInput.next() + " Social"); 
+         }
+         if(getInput.hasNext(phone)){
+           System.out.println(getInput.next() + " Phone");
+         }
+         else{
+         getInput.next();
+         }
        }
+       getInput.nextLine();
      }
-       
+     getInput.close();
    }
  
  public static void main(String[] args) throws IOException{
