@@ -7,18 +7,26 @@ import java.util.regex.Pattern;
 
 public class Driver {
   ArrayList<Accounts> accountsDatabase = new ArrayList<Accounts>();
+  ArrayList <String> stringHolder = new ArrayList<String>();
+  ArrayList <Integer> intHolder = new ArrayList<Integer>();
+  
+  ArrayList <String> tempAccountName = new ArrayList<String>();
+  ArrayList <Integer> tempAccountNumber = new ArrayList<Integer>();
+  ArrayList <String> tempAccountPhone = new ArrayList<String>();
+  ArrayList <String> tempAccountSSN = new ArrayList<String>();
+  ArrayList <Double> tempAccountBalance = new ArrayList<Double>();
+  ArrayList <String> tempAccountType = new ArrayList<String>();
+     
  public Driver(){}
  
  public void readFile() throws IOException{
      Scanner getInput = null;
-     Accounts newAccount;
-     ArrayList <String> tempAccountName = new ArrayList<String>();
-     ArrayList <String> tempAccountPhone = new ArrayList<String>();
-     ArrayList <String> tempAccountSSN = new ArrayList<String>();
+    
+     /*ArrayList <String> tempAccountSSN = new ArrayList<String>();
      ArrayList <String> tempAccountType = new ArrayList<String>();
      ArrayList <Integer> tempAccountNumber = new ArrayList<Integer>();
      ArrayList <Integer> tempAccountBalance = new ArrayList<Integer>();
-     int token;
+     int token;*/
      
      try{
        getInput = new Scanner( new File(System.getProperty("user.home")+File.separator+"Desktop"+File.separator+"accounts data.txt")); // read file from desktop
@@ -27,40 +35,93 @@ public class Driver {
        System.out.println(i);
      }
      
-     while(getInput.hasNextLine()){
-       //read integer first
-       while(getInput.hasNext()){
-         
-         if(getInput.hasNextInt()){
-           token = getInput.nextInt();
-           if(Integer.toString(token).length() == 8){
-             tempAccountNumber.add(token);
-             System.out.println(tempAccountBalance.get(0));
-           }//end if
-           if(!(Integer.toString(token).length() == 8)){
-             tempAccountBalance.add(token);
-             //System.out.println(tempAccountBalance.get(0));
-           }
-         }//end if
-         getInput.next();
-       }//end while
-       getInput.nextLine();//read next line
-     }//end while
+     while(getInput.hasNext()){
+       if(getInput.hasNextInt()){
+         intHolder.add(Integer.parseInt(getInput.next()));
+       }
+       else{
+         stringHolder.add(getInput.next());
+       }
+
+     }
      getInput.close();
    }
  
- public void testArray(){
-   for(int i= 0; i < accountsDatabase.size(); i++){
-     System.out.println(accountsDatabase.get(i).accountNumber + " Account Number From Database");
+ public void sortTokens(){
+   /*String tempAccountName;
+   String tempAccountSSN;
+   String tempAccountPhone;
+   String tempAccountType;
+   int tempAccountNumber;
+   int tempAccountBalance;*/
+   
+   /*ArrayList <String> tempAccountName = new ArrayList<String>();
+   ArrayList <Integer> tempAccountNumber = new ArrayList<Integer>();
+   ArrayList <String> tempAccountPhone = new ArrayList<String>();
+   ArrayList <String> tempAccountSSN = new ArrayList<String>();
+   ArrayList <Double> tempAccountBalance = new ArrayList<Double>();
+   ArrayList <String> tempAccountType = new ArrayList<String>();*/
+   
+   //sort string tokens
+   for(int i=0; i < stringHolder.size(); i++){
+     if(stringHolder.get(i).matches("[A-Z][a-z]+( [A-Z][a-z]+)?")){
+       //System.out.println(stringHolder.get(i)+ " YEAAH");
+       tempAccountName.add(stringHolder.get(i));
+     }
+     else if(stringHolder.get(i).matches("\\d{3}-\\d{4}")){
+       tempAccountPhone.add(stringHolder.get(i));
+       //System.out.println(stringHolder.get(i)+ " ACOUNT PHONEEEEE");
+     }
+     else if(stringHolder.get(i).matches("\\d{3}-\\d{2}-\\d{4}")){
+       tempAccountSSN.add(stringHolder.get(i));
+       //System.out.println(stringHolder.get(i)+ " SSNNNNNN");
+     }
+     else if(stringHolder.get(i).matches("[A-Za-z]")){
+       tempAccountType.add(stringHolder.get(i));
+       //System.out.println(stringHolder.get(i)+ " ACOUNT TYPEEEEE");
+     }
+   }
+   //sort int tokens
+   for(int i=0; i < intHolder.size(); i ++){
+     if(Integer.toString(intHolder.get(i)).matches("\\d{8}")){
+       tempAccountNumber.add(intHolder.get(i));
+       //System.out.println(intHolder.get(i)+ " ACOUNT Number");
+     }
+     else{
+       tempAccountBalance.add((double)intHolder.get(i));
+       //System.out.println(intHolder.get(i)+ " ACOUNT Balance");
+     }
    }
  }
  
+ //create accounts objects
+ public void createAccounts(){
+   for(int i=0; i < tempAccountName.size();i++){
+     accountsDatabase.add(new Accounts(tempAccountName.get(i),tempAccountNumber.get(i),tempAccountPhone.get(i),tempAccountSSN.get(i),tempAccountBalance.get(i),tempAccountType.get(i)));
+   }
+ }
+ 
+ public void testArray(){
+   for(int i= 0; i < accountsDatabase.size(); i++){
+     System.out.println(accountsDatabase.get(i).getAccountName() + "  "+ accountsDatabase.get(i).getAccountNumber() + "  " +accountsDatabase.get(i).getAccountSSN()+"  "+accountsDatabase.get(i).getAccountSSN()+ "  "+accountsDatabase.get(i).getAccountBalance()+ "  "+accountsDatabase.get(i).getAccountType());
+   }
+   for(int i=0; i < intHolder.size(); i++){
+   }
+   System.out.println(tempAccountNumber.size());
+   System.out.println(tempAccountType.size());
+ }
+ 
+ //generate bank statements
  
  public static void main(String[] args) throws IOException{
   Driver test = new Driver();
   test.readFile();
+  test.sortTokens();
+  test.createAccounts();
   test.testArray();
   
+  //Business_Accounts business = new Business_Accounts();
+  
  }
-
+                                                                                               
 }
