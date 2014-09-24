@@ -5,13 +5,5 @@ public class Savings_Account extends Account{
   String accountType){
     super(accountName,accountNumber,accountPhone,accountSSN,accountBalance,accountType);
   }
-  public double generateEndingBalance(){
-    if(accountBalance < 5000){
-      this.interestRate = 0.04;
-    }else{
-      this.interestRate = 0.05;
-    }
-    closingBalance = accountBalance + (accountBalance * interestRate);
-    return closingBalance;
-  }
+  
 }

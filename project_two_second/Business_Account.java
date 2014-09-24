@@ -5,23 +5,10 @@ public class Business_Account extends Account{
   String accountType){
     super(accountName,accountNumber,accountPhone,accountSSN,accountBalance,accountType);
   }
+  public double generateEndingBalance(){
+    this.interestRate = 0;
+    closingBalance = accountBalance + (accountBalance * interestRate);
+    return closingBalance;
+  }
   
-  public String getAccountName(){
-    return this.accountName;
-  }
-  public int getAccountNumber(){
-    return this.accountNumber;
-  }
-  public String getAccountPhone(){
-    return this.accountPhone;
-  }
-  public String getAccountSSN(){
-    return this.accountSSN;
-  }
-  public double getAccountBalance(){
-    return this.accountBalance;
-  }
-  public String getAccountType(){
-    return this.accountType;
-  }
 }
