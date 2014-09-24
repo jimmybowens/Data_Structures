@@ -1,0 +1,6 @@
+package project_two_second;
+public class Checking_Account{
+  public Checking_Account(String accountName){
+    super(accountName);
+  } 
+}

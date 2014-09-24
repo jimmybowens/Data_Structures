@@ -1,0 +1,10 @@
+package project_two_second;
+
+public class Account{
+  int interateRate;
+  double closingBalance;
+  protected String accountName;
+  public Account(String accountName){
+    this.accountName = accountName;
+  }
+}
