@@ -20,7 +20,7 @@ public class Driver {
   ArrayList <String> tempAccountType = new ArrayList<String>();
      
  public Driver()throws IOException{
-   //start(); 
+   start(); 
  }
  
  public void readFile() throws IOException{
@@ -85,12 +85,22 @@ public class Driver {
    }
  }
  
- public void testArray(){
+ public void generateRandomDepositsWithdrawals(int accountNumber){
+   Random randomizer = new Random();
+   for(int i = 0; i < accountsDatabase.size(); i ++){
+     if(accountNumber == accountsDatabase.get(i).getAccountNumber()){
+       int decideDepositOrWithdrawal = randomizer.nextInt(2);
+       System.out.println(decideDepositOrWithdrawal);
+     }
+   }
+ }
+ 
+/* public void testArray(){
    for(int i= 0; i < accountsDatabase.size(); i++){
      System.out.println(accountsDatabase.get(i).getAccountName() + "  "+ accountsDatabase.get(i).getAccountNumber() + "  " +accountsDatabase.get(i).getAccountSSN()+"  "+accountsDatabase.get(i).getAccountSSN()+ "  "+accountsDatabase.get(i).getAccountBalance()+ "  "+accountsDatabase.get(i).getAccountType());
      System.out.println(accountsDatabase.get(i).generateEndingBalance());
    }
- }
+ }*/
  
  //generate bank statements
  public void generateStatements(){
@@ -104,11 +114,12 @@ public class Driver {
     }
     
     for(int i=0; i < accountsDatabase.size(); i++){
+      generateRandomDepositsWithdrawals(accountsDatabase.get(i).getAccountNumber());
       Calendar calendar = new GregorianCalendar();
       Date date = calendar.getTime();
       writeData.println("");
       writeData.println("");
-      writeData.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+      writeData.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
       writeData.println("Towson Community Bank");
       writeData.println("8000 York Rd, Towson, MD 21252");
       writeData.println("(410) 704-2000");
@@ -122,6 +133,21 @@ public class Driver {
       writeData.println("");
       writeData.println("POSTING DATE                                   DEBITS              CREDITS              OPEN BALANCE             CLOSING BALANCE           INTEREST RATE");
       writeData.println(date+"                     "+accountsDatabase.get(i).getAccountDebits()+"                "+accountsDatabase.get(i).getAccountCredits()+"                 "+accountsDatabase.get(i).getAccountOpeningBalance()+"                   "+accountsDatabase.get(i).generateEndingBalance()+ "                     "+accountsDatabase.get(i).getAccountInterestRate());
+      /*for(int m=0; m <accountsDatabase.get(i).getDepositArray().size();m++){
+        writeData.println(date+"                                        "+accountsDatabase.get(m).getDepositArray().get(m)+" (C)");
+      }
+      for(int m=0; m <accountsDatabase.get(i).getWithdrawalArray().size();m++){
+        writeData.println(date+"                   "+accountsDatabase.get(m).getWithdrawalArray().get(m)+" (W)");
+      }*/
+      
+      for(double a : accountsDatabase.get(i).depositArray){
+        writeData.println(date+"                                        "+a+" (C)");
+      }
+      for(double a : accountsDatabase.get(i).withdrawalArray){
+        System.out.println("HERE: "+a);
+        writeData.println(date+"                   "+a+" (W)");
+      }
+      
     }
     System.out.println("Data successfully written to file 'accounts data.txt' on Desktop");
     writeData.close();
@@ -193,11 +219,11 @@ public class Driver {
    
  }
  
- 
   public static void main(String [] args) throws IOException{
-    Driver init = new Driver();
-    init.start();
-    init.askForUserInput();
+    new Driver();
+    //Driver init = new Driver();
+    //init.start();
+    //init.askForUserInput();
     /*
     //TEST CASES FOR EACH ACCOUNT
     Account biz = new Business_Account("John", 7765353,"746-3445","343-33-3323",100,"B");

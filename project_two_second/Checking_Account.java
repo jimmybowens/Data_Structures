@@ -6,10 +6,10 @@ public class Checking_Account extends Account{
   String accountType){
     super(accountName,accountNumber,accountPhone,accountSSN,accountBalance,accountType);
     setInterestRate(0.025);
-    deposit(80);
-    withdraw(40);
-    withdraw(10);
-    withdraw(40);
+    //deposit(80);
+    //withdraw(40);
+    //withdraw(10);
+    //withdraw(40);
     //deposit(800);
   }
   

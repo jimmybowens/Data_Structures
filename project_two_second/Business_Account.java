@@ -7,9 +7,9 @@ public class Business_Account extends Account{
   String accountType){
     super(accountName,accountNumber,accountPhone,accountSSN,accountBalance,accountType);
     setInterestRate(0);
-    deposit(50);
-    withdraw(60);
-    deposit(80);
+    //deposit(50);
+    //withdraw(60);
+    //deposit(80);
     //deposit(80);
     //withdraw(100);
     
