@@ -19,7 +19,9 @@ public class Driver {
   ArrayList <Double> tempAccountBalance = new ArrayList<Double>();
   ArrayList <String> tempAccountType = new ArrayList<String>();
      
- public Driver(){}
+ public Driver()throws IOException{
+   start(); 
+ }
  
  public void readFile() throws IOException{
      Scanner getInput = null;
@@ -102,38 +104,76 @@ public class Driver {
     }
     
     for(int i=0; i < accountsDatabase.size(); i++){
+      Calendar calendar = new GregorianCalendar();
+      Date date = calendar.getTime();
       writeData.println("");
       writeData.println("");
-      writeData.println("------------------------------------------------------------------------------------------");
+      writeData.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
       writeData.println("Towson Community Bank");
       writeData.println("8000 York Rd, Towson, MD 21252");
       writeData.println("(410) 704-2000");
       writeData.println("");
       writeData.println("");
-      writeData.println("ATTN: "+accountsDatabase.get(i).getAccountName());
-      writeData.println("[ADDRESS ON FILE                                                   ACCOUNT NUMBER: "+accountsDatabase.get(i).getAccountNumber());
-      writeData.println("                                            IMPORTANT NOTICE                               ");
+      writeData.println("ATTN: "+accountsDatabase.get(i).getAccountName()+ "                                                                                                             SSN: "+accountsDatabase.get(i).getAccountSSN());
+      writeData.println("[ADDRESS ON FILE                                                                                                       ACCOUNT NUMBER: "+accountsDatabase.get(i).getAccountNumber());
+      writeData.println("Phone: "+accountsDatabase.get(i).getAccountPhone());
+      writeData.println("                                            IMPORTANT NOTICE: Statement Ending September 15, 2014                               ");
       writeData.println("TRANSACTION SUMMARY:");
       writeData.println("");
-      writeData.println("POSTING DATE                   DEBITS                   CREDITS                 BALANCE");
-      
-      writeData.println(
-      //writeData.println(accountsDatabase.get(i).getAccountNumber());
-      //writeData.println("Statement, September 2014" );
-      //writeData.println("");
-      //writeData.println("");
-      //writeData.println(accountsDatabase.get(i).getAccountName()+ " "+accountsDatabase.get(i).getAccountNumber());
+      writeData.println("POSTING DATE                                   DEBITS              CREDITS              OPEN BALANCE             CLOSING BALANCE           INTEREST RATE");
+      writeData.println(date+"                     "+accountsDatabase.get(i).getAccountDebits()+"                "+accountsDatabase.get(i).getAccountCredits()+"                 "+accountsDatabase.get(i).getAccountOpeningBalance()+"                   "+accountsDatabase.get(i).generateEndingBalance()+ "                     "+accountsDatabase.get(i).getAccountInterestRate());
+     
     }
+    
+    System.out.println("Data successfully written to file 'accounts data.txt' on Desktop");
     
     writeData.close();
  }
  
+ public void start() throws IOException{
+   readFile();
+   sortTokens();
+   createAccounts();
+   generateStatements();
+ }
+ 
   public static void main(String [] args) throws IOException{
-    Driver test = new Driver();
-    test.readFile();
-    test.sortTokens();
-    test.createAccounts();
-    test.generateStatements();
-    test.testArray();
+    new Driver();
+    
+    //TEST CASES FOR EACH ACCOUNT
+    Account biz = new Business_Account("John", 7765353,"746-3445","343-33-3323",100,"B");
+    System.out.println("Balance: "+biz.generateEndingBalance());
+    System.out.println("Current interest rate: "+biz.getAccountInterestRate());
+    biz.deposit(200);
+    System.out.println("Balance: "+biz.generateEndingBalance());
+    biz.withdraw(200);
+    System.out.println("Balance: "+biz.generateEndingBalance());
+    
+    System.out.println("------------------------------------------------------");
+    
+    Account savings = new Savings_Account("John", 7765353,"746-3445","343-33-3323",100,"S");
+    System.out.println("Balance: "+savings.generateEndingBalance());
+    System.out.println("Current interest rate: "+savings.getAccountInterestRate());
+    savings.deposit(200);
+    System.out.println("Balance: "+savings.generateEndingBalance());
+    System.out.println("Current interest rate: "+savings.getAccountInterestRate());
+    savings.withdraw(200);
+    System.out.println("Balance: "+savings.generateEndingBalance());
+    System.out.println("Current interest rate: "+savings.getAccountInterestRate());
+    savings.deposit(7000);
+    System.out.println("Balance: "+savings.generateEndingBalance());
+    System.out.println("Current interest rate: "+savings.getAccountInterestRate());
+    
+    System.out.println("------------------------------------------------------");
+    
+    Account checking = new Checking_Account("John", 7765353,"746-3445","343-33-3323",100,"C");
+    System.out.println("Balance: "+checking.generateEndingBalance());
+    System.out.println("Current interest rate: "+checking.getAccountInterestRate());
+    checking.deposit(200);
+    System.out.println("Balance: "+checking.generateEndingBalance());
+    System.out.println("Current interest rate: "+checking.getAccountInterestRate());
+    checking.withdraw(200);
+    System.out.println("Balance: "+checking.generateEndingBalance());
+    System.out.println("Current interest rate: "+checking.getAccountInterestRate());
   }
 }

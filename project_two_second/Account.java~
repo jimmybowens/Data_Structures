@@ -1,8 +1,8 @@
 package project_two_second;
 
 public class Account{
-  int interateRate;
-  double closingBalance;
+  double interestRate = 0;
+  double closingBalance = 0;
   protected String accountName, accountPhone, accountSSN, accountType;
   protected int accountNumber;
   protected double accountBalance;
@@ -34,5 +34,9 @@ public class Account{
   }
   public String getAccountType(){
     return this.accountType;
+  }
+  public double generateEndingBalance(){
+    closingBalance = accountBalance + (accountBalance * interestRate);
+    return closingBalance;
   }
 }

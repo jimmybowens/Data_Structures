@@ -1,9 +1,11 @@
 package project_two_second;
 
+import java.io.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
+
 
 public class Driver {
   ArrayList<Account> accountsDatabase = new ArrayList<Account>();
@@ -21,13 +23,6 @@ public class Driver {
  
  public void readFile() throws IOException{
      Scanner getInput = null;
-    
-     /*ArrayList <String> tempAccountSSN = new ArrayList<String>();
-     ArrayList <String> tempAccountType = new ArrayList<String>();
-     ArrayList <Integer> tempAccountNumber = new ArrayList<Integer>();
-     ArrayList <Integer> tempAccountBalance = new ArrayList<Integer>();
-     int token;*/
-     
      try{
        getInput = new Scanner( new File(System.getProperty("user.home")+File.separator+"Desktop"+File.separator+"accounts data.txt")); // read file from desktop
        getInput.nextLine();
@@ -42,54 +37,33 @@ public class Driver {
        else{
          stringHolder.add(getInput.next());
        }
-
      }
      getInput.close();
    }
  
  public void sortTokens(){
-   /*String tempAccountName;
-   String tempAccountSSN;
-   String tempAccountPhone;
-   String tempAccountType;
-   int tempAccountNumber;
-   int tempAccountBalance;*/
-   
-   /*ArrayList <String> tempAccountName = new ArrayList<String>();
-   ArrayList <Integer> tempAccountNumber = new ArrayList<Integer>();
-   ArrayList <String> tempAccountPhone = new ArrayList<String>();
-   ArrayList <String> tempAccountSSN = new ArrayList<String>();
-   ArrayList <Double> tempAccountBalance = new ArrayList<Double>();
-   ArrayList <String> tempAccountType = new ArrayList<String>();*/
-   
    //sort string tokens
    for(int i=0; i < stringHolder.size(); i++){
      if(stringHolder.get(i).matches("[A-Z][a-z]+( [A-Z][a-z]+)?")){
-       //System.out.println(stringHolder.get(i)+ " YEAAH");
        tempAccountName.add(stringHolder.get(i));
      }
      else if(stringHolder.get(i).matches("\\d{3}-\\d{4}")){
        tempAccountPhone.add(stringHolder.get(i));
-       //System.out.println(stringHolder.get(i)+ " ACOUNT PHONEEEEE");
      }
      else if(stringHolder.get(i).matches("\\d{3}-\\d{2}-\\d{4}")){
        tempAccountSSN.add(stringHolder.get(i));
-       //System.out.println(stringHolder.get(i)+ " SSNNNNNN");
      }
      else if(stringHolder.get(i).matches("[A-Za-z]")){
        tempAccountType.add(stringHolder.get(i));
-       //System.out.println(stringHolder.get(i)+ " ACOUNT TYPEEEEE");
      }
    }
    //sort int tokens
    for(int i=0; i < intHolder.size(); i ++){
      if(Integer.toString(intHolder.get(i)).matches("\\d{8}")){
        tempAccountNumber.add(intHolder.get(i));
-       //System.out.println(intHolder.get(i)+ " ACOUNT Number");
      }
      else{
        tempAccountBalance.add((double)intHolder.get(i));
-       //System.out.println(intHolder.get(i)+ " ACOUNT Balance");
      }
    }
  }
@@ -97,40 +71,69 @@ public class Driver {
  //create accounts objects
  public void createAccounts(){
    for(int i=0; i < tempAccountName.size();i++){
-     accountsDatabase.add(new Business_Account(tempAccountName.get(i),tempAccountNumber.get(i),tempAccountPhone.get(i),tempAccountSSN.get(i),tempAccountBalance.get(i),tempAccountType.get(i)));
-     //accountsDatabase.add(new Business_Account("Business",14872,"555-0498","122-78-7545",4500,"B"));
      if(tempAccountType.get(i).equals("B")){
        accountsDatabase.add(new Business_Account(tempAccountName.get(i),tempAccountNumber.get(i),tempAccountPhone.get(i),tempAccountSSN.get(i),tempAccountBalance.get(i),tempAccountType.get(i)));
      }
-     System.out.println(tempAccountType.get(i));
+     if(tempAccountType.get(i).equals("C")){
+       accountsDatabase.add(new Checking_Account(tempAccountName.get(i),tempAccountNumber.get(i),tempAccountPhone.get(i),tempAccountSSN.get(i),tempAccountBalance.get(i),tempAccountType.get(i)));
+     }
+     if(tempAccountType.get(i).equals("S")){
+       accountsDatabase.add(new Savings_Account(tempAccountName.get(i),tempAccountNumber.get(i),tempAccountPhone.get(i),tempAccountSSN.get(i),tempAccountBalance.get(i),tempAccountType.get(i)));
+     }
    }
  }
  
  public void testArray(){
    for(int i= 0; i < accountsDatabase.size(); i++){
      System.out.println(accountsDatabase.get(i).getAccountName() + "  "+ accountsDatabase.get(i).getAccountNumber() + "  " +accountsDatabase.get(i).getAccountSSN()+"  "+accountsDatabase.get(i).getAccountSSN()+ "  "+accountsDatabase.get(i).getAccountBalance()+ "  "+accountsDatabase.get(i).getAccountType());
+     System.out.println(accountsDatabase.get(i).generateEndingBalance());
    }
-   for(int i=0; i < intHolder.size(); i++){
-   }
-   System.out.println(tempAccountNumber.size());
-   System.out.println(tempAccountType.size());
  }
  
  //generate bank statements
+ public void generateStatements(){
+   String filePath = null;
+    PrintWriter writeData = null; //declare file object
+    try{
+      filePath = System.getProperty("user.home")+File.separator+"Desktop"+File.separator+"Account Statements.txt"; //get new file path
+      writeData = new PrintWriter(filePath, "utf-8"); //open new file for writing student data
+    }catch(IOException i){
+      System.out.println(i); //print error message is something is wrong with opening the new file for writing data
+    }
+    
+    for(int i=0; i < accountsDatabase.size(); i++){
+      writeData.println("");
+      writeData.println("");
+      writeData.println("------------------------------------------------------------------------------------------");
+      writeData.println("Towson Community Bank");
+      writeData.println("8000 York Rd, Towson, MD 21252");
+      writeData.println("(410) 704-2000");
+      writeData.println("");
+      writeData.println("");
+      writeData.println("ATTN: "+accountsDatabase.get(i).getAccountName());
+      writeData.println("[ADDRESS ON FILE                                                   ACCOUNT NUMBER: "+accountsDatabase.get(i).getAccountNumber());
+      writeData.println("                                            IMPORTANT NOTICE                               ");
+      writeData.println("TRANSACTION SUMMARY:");
+      writeData.println("");
+      writeData.println("POSTING DATE                   DEBITS                   CREDITS                 BALANCE");
+      
+      writeData.println(
+      //writeData.println(accountsDatabase.get(i).getAccountNumber());
+      //writeData.println("Statement, September 2014" );
+      //writeData.println("");
+      //writeData.println("");
+      //writeData.println(accountsDatabase.get(i).getAccountName()+ " "+accountsDatabase.get(i).getAccountNumber());
+    }
+    
+    writeData.close();
+ }
  
   public static void main(String [] args) throws IOException{
     Driver test = new Driver();
     test.readFile();
     test.sortTokens();
     test.createAccounts();
+    test.generateStatements();
     test.testArray();
-    System.out.println(test.accountsDatabase.size());
-    
-    Account newBusiness = new Business_Account("Business",14872,"555-0498","122-78-7545",4500,"B");
-    Account newSavings = new Savings_Account("Savings",14872,"555-0498","122-78-7545",4500,"B");
-    Account newChecking = new Checking_Account("Checking",14872,"555-0498","122-78-7545",4500,"B");
-    System.out.println(newBusiness.accountName);
-    System.out.println(newSavings.accountName);
-    System.out.println(newChecking.accountName);
   }
 }
