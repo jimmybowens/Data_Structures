@@ -56,6 +56,14 @@ public class Account{
   public double getAccountInterestRate(){
     return interestRate;
   }
+  
+  public ArrayList getDepositArray(){
+    return depositArray;
+  }
+  public ArrayList getWithdrawalArray(){
+    return withdrawalArray;
+  }
+  
   public void deposit(double depositedAmount){
     depositArray.add(depositedAmount);
     System.out.println("Deposit of "+depositedAmount+ " made to "+getAccountName()+"'s "+getAccountType()+" account with account number "+getAccountNumber());
@@ -82,5 +90,6 @@ public class Account{
     closingBalance = closingBalance +(closingBalance * interestRate);
     return closingBalance;
   }
+  
   
 }

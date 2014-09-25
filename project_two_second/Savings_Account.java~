@@ -5,13 +5,30 @@ public class Savings_Account extends Account{
   String accountType){
     super(accountName,accountNumber,accountPhone,accountSSN,accountBalance,accountType);
   }
-  public double generateEndingBalance(){
-    if(accountBalance < 5000){
+  public void setInterestRate(){
+    if(closingBalance < 5000){
       this.interestRate = 0.04;
-    }else{
+    }
+    else{
       this.interestRate = 0.05;
     }
-    closingBalance = accountBalance + (accountBalance * interestRate);
+  }
+  
+  public double generateEndingBalance(){
+    //decide interest rate for savings
+    setInterestRate();
+    //check if any deposits or withdrawals made
+    double totalTransactions = 0;
+    for(int i=0; i < depositArray.size();i++){
+      totalTransactions = totalTransactions + depositArray.get(i);
+    }
+    for(int i=0; i < withdrawalArray.size();i++){
+      totalTransactions = totalTransactions - withdrawalArray.get(i);
+    }
+    setInterestRate();
+    closingBalance = accountOpeningBalance + totalTransactions;
+    closingBalance = closingBalance +(closingBalance * interestRate);
+    setInterestRate();
     return closingBalance;
   }
 }

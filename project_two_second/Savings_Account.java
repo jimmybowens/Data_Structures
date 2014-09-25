@@ -1,9 +1,16 @@
 package project_two_second;
 
+import java.util.*;
+
 public class Savings_Account extends Account{
   public Savings_Account(String accountName, int accountNumber, String accountPhone, String accountSSN, double accountBalance,
   String accountType){
     super(accountName,accountNumber,accountPhone,accountSSN,accountBalance,accountType);
+    deposit(800);
+    withdraw(400);
+    //deposit(700);
+    //deposit(600);
+    //deposit(800);
   }
   public void setInterestRate(){
     if(closingBalance < 5000){
@@ -31,4 +38,11 @@ public class Savings_Account extends Account{
     setInterestRate();
     return closingBalance;
   }
+  
+  /* public ArrayList getDepositArray(){
+    return depositArray;
+  }
+  public ArrayList getWithdrawalArray(){
+    return withdrawalArray;
+  }*/
 }

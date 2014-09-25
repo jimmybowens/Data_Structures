@@ -141,6 +141,7 @@ public class Driver {
    boolean isWidthdrawal = false;
    boolean isValidEntry = false;
    boolean gotAccountNumber = false;
+   boolean madeDeposit = false;
    System.out.println("Welcome to Towson Community Bank. What would you like to do today? Enter D for deposit, W for withdrawal, or T to run test cases.");
    while(stop==false){
      //getInput.next();
@@ -153,8 +154,38 @@ public class Driver {
      }//end check
      
      while(!gotAccountNumber && isDeposit){
-       System.out.println("Please enter a valid account number");
-       double token =f
+       //if(getInput.hasNextDouble()){
+         //System.out.println("Please enter a valid account number");
+       double token = 0;
+         try{
+           System.out.println("Please enter a valid account number");
+           token = getInput.nextDouble();
+         
+         for(int i=0; i < accountsDatabase.size(); i++){
+           int compareValue = Double.compare(token,accountsDatabase.get(i).getAccountNumber());
+           if(compareValue == 0 ){
+             gotAccountNumber = true;
+           }
+         }
+         }catch(InputMismatchException i){
+           System.out.println("The following error occured:"+ i+ ". System restarted...");
+           askForUserInput();
+         }
+     }
+     
+     while(isDeposit && gotAccountNumber && !madeDeposit){
+       System.out.println("Enter amount to deposit");
+       double token = 0;
+       try{
+         token =getInput.nextDouble();
+         if(token!=0){
+           System.out.println(token + " will be deposited");
+           madeDeposit = true;
+         }
+       }catch(InputMismatchException i){
+         System.out.println("The following error occured:"+ i+ ". System restarted...");
+         askForUserInput();
+       }
      }
      
    }
