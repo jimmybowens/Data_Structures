@@ -20,7 +20,7 @@ public class Driver {
   ArrayList <String> tempAccountType = new ArrayList<String>();
      
  public Driver()throws IOException{
-   start(); 
+   //start(); 
  }
  
  public void readFile() throws IOException{
@@ -122,11 +122,8 @@ public class Driver {
       writeData.println("");
       writeData.println("POSTING DATE                                   DEBITS              CREDITS              OPEN BALANCE             CLOSING BALANCE           INTEREST RATE");
       writeData.println(date+"                     "+accountsDatabase.get(i).getAccountDebits()+"                "+accountsDatabase.get(i).getAccountCredits()+"                 "+accountsDatabase.get(i).getAccountOpeningBalance()+"                   "+accountsDatabase.get(i).generateEndingBalance()+ "                     "+accountsDatabase.get(i).getAccountInterestRate());
-     
     }
-    
     System.out.println("Data successfully written to file 'accounts data.txt' on Desktop");
-    
     writeData.close();
  }
  
@@ -137,9 +134,71 @@ public class Driver {
    generateStatements();
  }
  
+ public void askForUserInput()throws IOException{
+   Scanner getInput = new Scanner(System.in);
+   boolean stop = false;
+   boolean isDeposit = false;
+   boolean isWidthdrawal = false;
+   boolean isValidEntry = false;
+   boolean gotAccountNumber = false;
+   boolean madeDeposit = false;
+   System.out.println("Welcome to Towson Community Bank. What would you like to do today? Enter D for deposit, W for withdrawal, or T to run test cases.");
+   while(stop==false){
+     //getInput.next();
+     while(!isValidEntry){
+       System.out.println("Please enter D for deposit, W for withdrawal, or T to run test cases.");
+       if(getInput.next().equalsIgnoreCase("D")){
+         isValidEntry = true;
+         isDeposit = true;
+       }
+     }//end check
+     
+     while(!gotAccountNumber && isDeposit){
+       //if(getInput.hasNextDouble()){
+         //System.out.println("Please enter a valid account number");
+       double token = 0;
+         try{
+           System.out.println("Please enter a valid account number");
+           token = getInput.nextDouble();
+         
+         for(int i=0; i < accountsDatabase.size(); i++){
+           int compareValue = Double.compare(token,accountsDatabase.get(i).getAccountNumber());
+           if(compareValue == 0 ){
+             gotAccountNumber = true;
+           }
+         }
+         }catch(InputMismatchException i){
+           System.out.println("The following error occured:"+ i+ ". System restarted...");
+           askForUserInput();
+         }
+     }
+     
+     while(isDeposit && gotAccountNumber && !madeDeposit){
+       System.out.println("Enter amount to deposit");
+       double token = 0;
+       try{
+         token =getInput.nextDouble();
+         if(token!=0){
+           System.out.println(token + " will be deposited");
+           madeDeposit = true;
+         }
+       }catch(InputMismatchException i){
+         System.out.println("The following error occured:"+ i+ ". System restarted...");
+         askForUserInput();
+       }
+     }
+     
+   }
+     
+   
+ }
+ 
+ 
   public static void main(String [] args) throws IOException{
-    new Driver();
-    
+    Driver init = new Driver();
+    init.start();
+    init.askForUserInput();
+    /*
     //TEST CASES FOR EACH ACCOUNT
     Account biz = new Business_Account("John", 7765353,"746-3445","343-33-3323",100,"B");
     System.out.println("Balance: "+biz.generateEndingBalance());
@@ -175,5 +234,6 @@ public class Driver {
     checking.withdraw(200);
     System.out.println("Balance: "+checking.generateEndingBalance());
     System.out.println("Current interest rate: "+checking.getAccountInterestRate());
+    */
   }
 }
