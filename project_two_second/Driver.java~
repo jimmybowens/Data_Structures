@@ -90,7 +90,15 @@ public class Driver {
    for(int i = 0; i < accountsDatabase.size(); i ++){
      if(accountNumber == accountsDatabase.get(i).getAccountNumber()){
        int decideDepositOrWithdrawal = randomizer.nextInt(2);
-       System.out.println(decideDepositOrWithdrawal);
+       int numberOfTransactions = randomizer.nextInt(10);
+       for(int depositNumber = 0; depositNumber < numberOfTransactions; depositNumber++){
+         double depositAmount = randomizer.nextDouble();
+         if(decideDepositOrWithdrawal == 1){
+           accountsDatabase.get(i).deposit(depositAmount);
+         }else{
+           accountsDatabase.get(i).withdraw(depositAmount);
+         }
+       }
      }
    }
  }
@@ -158,65 +166,6 @@ public class Driver {
    sortTokens();
    createAccounts();
    generateStatements();
- }
- 
- public void askForUserInput()throws IOException{
-   Scanner getInput = new Scanner(System.in);
-   boolean stop = false;
-   boolean isDeposit = false;
-   boolean isWidthdrawal = false;
-   boolean isValidEntry = false;
-   boolean gotAccountNumber = false;
-   boolean madeDeposit = false;
-   System.out.println("Welcome to Towson Community Bank. What would you like to do today? Enter D for deposit, W for withdrawal, or T to run test cases.");
-   while(stop==false){
-     //getInput.next();
-     while(!isValidEntry){
-       System.out.println("Please enter D for deposit, W for withdrawal, or T to run test cases.");
-       if(getInput.next().equalsIgnoreCase("D")){
-         isValidEntry = true;
-         isDeposit = true;
-       }
-     }//end check
-     
-     while(!gotAccountNumber && isDeposit){
-       //if(getInput.hasNextDouble()){
-         //System.out.println("Please enter a valid account number");
-       double token = 0;
-         try{
-           System.out.println("Please enter a valid account number");
-           token = getInput.nextDouble();
-         
-         for(int i=0; i < accountsDatabase.size(); i++){
-           int compareValue = Double.compare(token,accountsDatabase.get(i).getAccountNumber());
-           if(compareValue == 0 ){
-             gotAccountNumber = true;
-           }
-         }
-         }catch(InputMismatchException i){
-           System.out.println("The following error occured:"+ i+ ". System restarted...");
-           askForUserInput();
-         }
-     }
-     
-     while(isDeposit && gotAccountNumber && !madeDeposit){
-       System.out.println("Enter amount to deposit");
-       double token = 0;
-       try{
-         token =getInput.nextDouble();
-         if(token!=0){
-           System.out.println(token + " will be deposited");
-           madeDeposit = true;
-         }
-       }catch(InputMismatchException i){
-         System.out.println("The following error occured:"+ i+ ". System restarted...");
-         askForUserInput();
-       }
-     }
-     
-   }
-     
-   
  }
  
   public static void main(String [] args) throws IOException{
