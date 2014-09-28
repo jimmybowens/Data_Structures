@@ -150,7 +150,7 @@ public class Driver {
       writeData.println("");
       writeData.println("");
       writeData.println("ATTN: "+accountsDatabase.get(i).getAccountName()+ "                                                                                                             SSN: "+accountsDatabase.get(i).getAccountSSN());
-      writeData.println("[ADDRESS ON FILE                                                                                                       ACCOUNT NUMBER: "+accountsDatabase.get(i).getAccountNumber());
+      writeData.println("[ADDRESS ON FILE                                                                                 "+"Type: "+accountsDatabase.get(i).getAccountType()+"            ACCOUNT NUMBER: "+accountsDatabase.get(i).getAccountNumber());
       writeData.println("Phone: "+accountsDatabase.get(i).getAccountPhone());
       writeData.println("                                            IMPORTANT NOTICE: Statement Ending September 15, 2014                               ");
       writeData.println("TRANSACTION SUMMARY:");
