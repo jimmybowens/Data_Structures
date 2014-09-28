@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
-
 public class Driver {
   ArrayList<Account> accountsDatabase = new ArrayList<Account>();
   ArrayList <String> stringHolder = new ArrayList<String>();
@@ -84,32 +83,6 @@ public class Driver {
      }
    }
  }
- 
- public void generateRandomDepositsWithdrawals(int accountNumber){
-   Random randomizer = new Random();
-   for(int i = 0; i < accountsDatabase.size(); i ++){
-     if(accountNumber == accountsDatabase.get(i).getAccountNumber()){
-       int decideDepositOrWithdrawal = randomizer.nextInt(2);
-       int numberOfTransactions = randomizer.nextInt(10);
-       for(int depositNumber = 0; depositNumber < numberOfTransactions; depositNumber++){
-         double depositAmount = randomizer.nextDouble();
-         if(decideDepositOrWithdrawal == 1){
-           accountsDatabase.get(i).deposit(depositAmount);
-         }else{
-           accountsDatabase.get(i).withdraw(depositAmount);
-         }
-       }
-     }
-   }
- }
- 
-/* public void testArray(){
-   for(int i= 0; i < accountsDatabase.size(); i++){
-     System.out.println(accountsDatabase.get(i).getAccountName() + "  "+ accountsDatabase.get(i).getAccountNumber() + "  " +accountsDatabase.get(i).getAccountSSN()+"  "+accountsDatabase.get(i).getAccountSSN()+ "  "+accountsDatabase.get(i).getAccountBalance()+ "  "+accountsDatabase.get(i).getAccountType());
-     System.out.println(accountsDatabase.get(i).generateEndingBalance());
-   }
- }*/
- 
  //generate bank statements
  public void generateStatements(){
    String filePath = null;
@@ -120,9 +93,7 @@ public class Driver {
     }catch(IOException i){
       System.out.println(i); //print error message is something is wrong with opening the new file for writing data
     }
-    
     for(int i=0; i < accountsDatabase.size(); i++){
-      generateRandomDepositsWithdrawals(accountsDatabase.get(i).getAccountNumber());
       Calendar calendar = new GregorianCalendar();
       Date date = calendar.getTime();
       writeData.println("");
@@ -141,40 +112,21 @@ public class Driver {
       writeData.println("");
       writeData.println("POSTING DATE                                   DEBITS              CREDITS              OPEN BALANCE             CLOSING BALANCE           INTEREST RATE");
       writeData.println(date+"                     "+accountsDatabase.get(i).getAccountDebits()+"                "+accountsDatabase.get(i).getAccountCredits()+"                 "+accountsDatabase.get(i).getAccountOpeningBalance()+"                   "+accountsDatabase.get(i).generateEndingBalance()+ "                     "+accountsDatabase.get(i).getAccountInterestRate());
-      /*for(int m=0; m <accountsDatabase.get(i).getDepositArray().size();m++){
-        writeData.println(date+"                                        "+accountsDatabase.get(m).getDepositArray().get(m)+" (C)");
-      }
-      for(int m=0; m <accountsDatabase.get(i).getWithdrawalArray().size();m++){
-        writeData.println(date+"                   "+accountsDatabase.get(m).getWithdrawalArray().get(m)+" (W)");
-      }*/
-      
       for(double a : accountsDatabase.get(i).depositArray){
         writeData.println(date+"                                        "+a+" (C)");
       }
       for(double a : accountsDatabase.get(i).withdrawalArray){
         System.out.println("HERE: "+a);
         writeData.println(date+"                   "+a+" (W)");
-      }
-      
+      } 
     }
     System.out.println("Data successfully written to file 'accounts data.txt' on Desktop");
     writeData.close();
  }
- 
- public void start() throws IOException{
-   readFile();
-   sortTokens();
-   createAccounts();
-   generateStatements();
- }
- 
-  public static void main(String [] args) throws IOException{
-    new Driver();
-    //Driver init = new Driver();
-    //init.start();
-    //init.askForUserInput();
-    /*
-    //TEST CASES FOR EACH ACCOUNT
+ //test data
+  public void testAccounts(){
+    //TEST CASES FOR EACH TYPE OF ACCOUNTS
+    System.out.println("Printing test data for each types of account...");
     Account biz = new Business_Account("John", 7765353,"746-3445","343-33-3323",100,"B");
     System.out.println("Balance: "+biz.generateEndingBalance());
     System.out.println("Current interest rate: "+biz.getAccountInterestRate());
@@ -182,9 +134,7 @@ public class Driver {
     System.out.println("Balance: "+biz.generateEndingBalance());
     biz.withdraw(200);
     System.out.println("Balance: "+biz.generateEndingBalance());
-    
     System.out.println("------------------------------------------------------");
-    
     Account savings = new Savings_Account("John", 7765353,"746-3445","343-33-3323",100,"S");
     System.out.println("Balance: "+savings.generateEndingBalance());
     System.out.println("Current interest rate: "+savings.getAccountInterestRate());
@@ -197,9 +147,7 @@ public class Driver {
     savings.deposit(7000);
     System.out.println("Balance: "+savings.generateEndingBalance());
     System.out.println("Current interest rate: "+savings.getAccountInterestRate());
-    
     System.out.println("------------------------------------------------------");
-    
     Account checking = new Checking_Account("John", 7765353,"746-3445","343-33-3323",100,"C");
     System.out.println("Balance: "+checking.generateEndingBalance());
     System.out.println("Current interest rate: "+checking.getAccountInterestRate());
@@ -209,6 +157,15 @@ public class Driver {
     checking.withdraw(200);
     System.out.println("Balance: "+checking.generateEndingBalance());
     System.out.println("Current interest rate: "+checking.getAccountInterestRate());
-    */
+    }
+ public void start() throws IOException{
+   readFile();
+   sortTokens();
+   createAccounts();
+   generateStatements();
+   testAccounts();
+ }
+  public static void main(String [] args) throws IOException{
+    new Driver();
   }
 }

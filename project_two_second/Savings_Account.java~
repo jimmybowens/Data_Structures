@@ -6,8 +6,8 @@ public class Savings_Account extends Account{
   public Savings_Account(String accountName, int accountNumber, String accountPhone, String accountSSN, double accountBalance,
   String accountType){
     super(accountName,accountNumber,accountPhone,accountSSN,accountBalance,accountType);
-    deposit(800);
-    withdraw(400);
+    //deposit(800);
+    //withdraw(400);
     //deposit(700);
     //deposit(600);
     //deposit(800);
